@@ -5,6 +5,7 @@
 - GNU-GPL; no license; free to use!
 - update 2023-07-24 10:15 IST; initial review; optimise
 - update 2023-07-25 21:50 IST; refer api endpoints
+- update 2023-07-26 21:05 IST; get api token from file
 
 **purpose**
 - pihole perform internal routine and backup of database and configuration to archive
@@ -33,9 +34,10 @@
 **process**
 - get stats -> stop ftl -> backup db -> start ftl -> backup config -> flush -> update
 
-**0.0 pihole version; stats**
+**0.0 pihole version; stats; token**
 - 0.1 get pihole version
 - 0.2 get pihole stats
+- 0.3 get pihole api token
 
 **1.0 pihole move db to archive**
 - 1.1 pihole folder
