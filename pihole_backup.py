@@ -6,6 +6,7 @@
 # GNU-GPL; no license; free to use!
 # update 2023-07-24 10:15 IST; initial review; optimise
 # update 2023-07-25 21:50 IST; refer api endpoints
+# update 2023-07-26 21:05 IST; get api token from file
 #
 #------------------------------------------------------------
 # purpose
@@ -40,9 +41,10 @@
 # process
 # get stats -> stop ftl -> backup db -> start ftl -> backup config -> flush -> update
 #
-# 0.0 pihole version; stats
+# 0.0 pihole version; stats; token
 # 0.1 get pihole version
 # 0.2 get pihole stats
+# 0.3 get pihole api token
 #
 # 1.0 pihole move db to archive
 # 1.1 pihole folder
@@ -109,7 +111,6 @@
 #------------------------------------------------------------
 '''
 #permissions
-pihole_api_token   = "";   #api token
 pihole_bkp_ftl_db  = 'yes' #yes; no
 pihole_bkp_config  = 'yes' #yes; no
 config_backup_tele = 'yes' #yes; no
@@ -182,6 +183,11 @@ pih_db_dest_old = pihole_folder  + "/" + pih_db_name_old
 pih_db_dest_new = Logs_dir_cur   + "/" + pih_db_name_new
 pih_dest_config = Logs_dir_cur   + "/" + pih_name_config
 
+#pihole api token
+pih_webpass_file = pihole_folder + "setupVars.conf"
+pih_webpass_find = "WEBPASSWORD"
+pihole_api_token = ''
+
 #sudo commands; linux; pihole
 pih_cd_folder = "cd /etc/pihole/"
 pih_ftl_stop  = "sudo service pihole-FTL stop"
@@ -232,6 +238,44 @@ def get_pihole_version():
         log_write(instance)
         pass
 
+def get_pihole_api_token():
+    try:
+        global pihole_api_token
+        
+        #0.3 get pihole api token
+        instance = "pihole get api token from file"
+        log_write(instance)
+        
+        #read file
+        if not os.path.exists(pih_webpass_file):
+            instance = "pihole file not found; " + pih_webpass_file
+            log_write(instance)
+        else:
+            f_file = open(pih_webpass_file, 'r')
+            f_line = f_file.readlines()
+            f_file.close()
+            instance = "pihole file found; " + pih_webpass_file
+            log_write(instance)
+            
+            #find WEBPASSWORD
+            for value in f_line:
+                value = value.strip()
+                if pih_webpass_find in value:
+                    pihole_api_token = value.split('=')[1]
+                    break
+        
+        if pihole_api_token == "":
+            instance = "pihole api token; empty - {}".format(len(pihole_api_token))
+        else:
+            instance = "pihole api token; ok - {}".format(len(pihole_api_token))
+        log_write(instance)
+        
+        return pihole_api_token
+    except:
+        instance = "#Exception: pihole get api token"
+        log_write(instance)
+        pass
+
 def get_pihole_stats():
     try:
         #0.2 get pihole stats
@@ -246,6 +290,9 @@ def get_pihole_stats():
             #localhost; /pihole
             url_pihole = "http://localhost/pihole/api.php?summaryRaw"
         else:
+            #0.3 get pihole api token
+            get_pihole_api_token()
+            
             #localhost; /admin
             url_pihole = "http://localhost/admin/api.php?summaryRaw&auth="+ pihole_api_token
         
@@ -322,7 +369,7 @@ def main_process():
                     filesize = get_size(pih_db_dest_old)
                 else:
                      filesize = "0"
-                instance = "file size; " + pih_db_name_old + "; " + filesize + " bytes"
+                instance = "file size; " + pih_db_name_old + "; " + filesize
                 log_write(instance)
                 
                 #1.4 folder name
