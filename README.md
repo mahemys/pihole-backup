@@ -18,13 +18,13 @@
 - run this python script in terminal or via crontab
 
 **terminal**
-- run in terminal "sudo python3 /home/pi/pihole_backup.py"
+- run in terminal ```"sudo python3 /home/pi/pihole_backup.py"```
 
 **crontab**
 - user pi; root not required
 - crontab -e edit; crontab -l check
 - set your desired interval via crontab preferred e.o.d 23:59
-- add to crontab  "59 23 * * * sudo python3 /home/pi/pihole_backup.py"
+- add to crontab ```"59 23 * * * sudo python3 /home/pi/pihole_backup.py"```
 
 **requirements**
 - pytz for timezone
@@ -55,12 +55,12 @@
 - 2.5 update pi-hole aka all
 
 **pihole folders; files**
-- pihole folder  /etc/pihole/
-- pihole ftl db  /etc/pihole/pihole-FTL.db
-- archive  /home/pi/pihole_bkp/
-- database /home/pi/pihole_bkp/Y/Ym/pihole-FTL_Ymd_HMS.db
-- config   /home/pi/pihole_bkp/Y/Ym/pihole-conf_Ymd_HMS.tar.gz
-- bkplog   /home/pi/pihole_bkp/Y/Ym/pihole_bkp_log_Ymd_HMS.txt
+- pihole folder   /etc/pihole/
+- pihole ftl db   /etc/pihole/pihole-FTL.db
+- archive         /home/pi/pihole_bkp/
+- database        /home/pi/pihole_bkp/Y/Ym/pihole-FTL_Ymd_HMS.db
+- config          /home/pi/pihole_bkp/Y/Ym/pihole-conf_Ymd_HMS.tar.gz
+- bkplog          /home/pi/pihole_bkp/Y/Ym/pihole_bkp_log_Ymd_HMS.txt
 
 **pihole useful commands**
 - pihole -v        display version of each service
@@ -77,7 +77,7 @@
 - get stats from /pihole instead of /admin
 - keep old version of pi-hole 'AdminLTE v5.13' in /home/pi/AdminLTE-5.13
 - copy entire 'AdminLTE-5.13' folder to /var/www/html/pihole
-- sudo cp -a /home/pi/AdminLTE-5.13/. /var/www/html/pihole
+- ```sudo cp -a /home/pi/AdminLTE-5.13/. /var/www/html/pihole```
 - AdminLTE v5.13 and below -> /var/www/html/pihole -> no login required
 - AdminLTE v5.14 and above -> /var/www/html/admin  -> login or API Token required
 
@@ -88,6 +88,9 @@
 - You can get the token from Settings/API/Show API token or from /etc/pihole/setupVars.conf (WEBPASSWORD).
 - /admin/api.php?summaryRaw
 - /admin/api.php?summaryRaw&auth=\<TOKEN\>
+
+**pihole api token**
+- get api token from file
 
 **footnote**
 - let me know if you find any bugs!
